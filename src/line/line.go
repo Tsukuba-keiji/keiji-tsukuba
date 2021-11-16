@@ -38,7 +38,7 @@ func Gokitchensink() {
 	}
 
 	// serve /static/** files
-	/staticFileServer := http.FileServer(http.Dir("/static"))
+	staticFileServer := http.FileServer(http.Dir("/static"))
 	http.HandleFunc("/static/", http.StripPrefix("/static/", /staticFileServer).ServeHTTP)
 	// serve /downloaded/** files
 	downloadedFileServer := http.FileServer(http.Dir(app.downloadDir))
