@@ -21,10 +21,11 @@ import (
 	"os"
 
 	"github.com/line/line-bot-sdk-go/v7/linebot"
+	"/src/line"
 )
 
 func main() {
-	bot, err := linebot.New(
+	/*bot, err := linebot.New(
 		os.Getenv("LINE_CHANNEL_SECRET"),
 		os.Getenv("LINE_CHANNEL_ACCESS_TOKEN"),
 	)
@@ -64,5 +65,7 @@ func main() {
 	// For actual use, you must support HTTPS by using `ListenAndServeTLS`, a reverse proxy or something else.
 	if err := http.ListenAndServe(":"+os.Getenv("PORT"), nil); err != nil {
 		log.Fatal(err)
-	}
+	}*/
+	
+	line.Kitchensink()
 }
