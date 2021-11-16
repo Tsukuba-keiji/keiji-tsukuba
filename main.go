@@ -17,6 +17,9 @@ package main
 import "github.com/Tsukuba-keiji/keiji-tsukuba/src/line"
 
 func main() {
+  
+  //driveapi.url = https://script.google.com/macros/s/AKfycbwJziq-iSL2Kcc63TKhZd40FF2IcDmvsogulW7kayn6lXk_XaD1iO6QfqTTSnr4EoNT/exec
+  
 	/*bot, err := linebot.New(
 		os.Getenv("LINE_CHANNEL_SECRET"),
 		os.Getenv("LINE_CHANNEL_ACCESS_TOKEN"),
