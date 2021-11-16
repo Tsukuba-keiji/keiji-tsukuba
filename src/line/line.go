@@ -27,12 +27,12 @@ import (
 	"github.com/line/line-bot-sdk-go/v7/linebot"
 )
 
-func Kitchensink() {
+func Gokitchensink() {
 	app, err := NewKitchenSink(
 		os.Getenv("LINE_CHANNEL_SECRET"),
 		os.Getenv("LINE_CHANNEL_ACCESS_TOKEN"),
 		os.Getenv("APP_BASE_URL"),
-	)Downloads
+	)
 	if err != nil {
 		log.Fatal(err)
 	}
