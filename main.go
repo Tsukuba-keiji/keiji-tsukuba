@@ -67,5 +67,5 @@ func main() {
 		log.Fatal(err)
 	}*/
 	
-	line.Kitchensink()
+	line.Gokitchensink()
 }
