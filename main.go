@@ -14,15 +14,7 @@
 
 package main
 
-import (
-	"fmt"
-	"log"
-	"net/http"
-	"os"
-
-	"github.com/line/line-bot-sdk-go/v7/linebot"
-	"github.com/Tsukuba-keiji/keiji-tsukuba/src/line"
-)
+import "github.com/Tsukuba-keiji/keiji-tsukuba/src/line"
 
 func main() {
 	/*bot, err := linebot.New(
