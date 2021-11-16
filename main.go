@@ -21,7 +21,7 @@ import (
 	"os"
 
 	"github.com/line/line-bot-sdk-go/v7/linebot"
-	"/src/line"
+	"src/line"
 )
 
 func main() {
