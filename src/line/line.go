@@ -29,9 +29,9 @@ import (
 
 // KitchenSink app
 type KitchenSink struct {
-	bot         *linebot.Client
-	appBaseURL  string
-	downloadDir string
+	Bot         *linebot.Client
+	AppBaseURL  string
+	DownloadDir string
 }
 
 // NewKitchenSink function
@@ -56,15 +56,15 @@ func NewKitchenSink(channelSecret, channelToken, appBaseURL string) (*KitchenSin
 		}
 	}
 	return &KitchenSink{
-		bot:         bot,
-		appBaseURL:  appBaseURL,
-		downloadDir: downloadDir,
+		Bot:         bot,
+		AppBaseURL:  appBaseURL,
+		DownloadDir: downloadDir,
 	}, nil
 }
 
 // Callback function for http server
 func (app *KitchenSink) Callback(w http.ResponseWriter, r *http.Request) {
-	events, err := app.bot.ParseRequest(r)
+	events, err := app.Bot.ParseRequest(r)
 	if err != nil {
 		if err == linebot.ErrInvalidSignature {
 			w.WriteHeader(400)
@@ -143,11 +143,11 @@ func (app *KitchenSink) handleText(message *linebot.TextMessage, replyToken stri
 	switch message.Text {
 	case "profile":
 		if source.UserID != "" {
-			profile, err := app.bot.GetProfile(source.UserID).Do()
+			profile, err := app.Bot.GetProfile(source.UserID).Do()
 			if err != nil {
 				return app.replyText(replyToken, err.Error())
 			}
-			if _, err := app.bot.ReplyMessage(
+			if _, err := app.Bot.ReplyMessage(
 				replyToken,
 				linebot.NewTextMessage("Display name: "+profile.DisplayName),
 				linebot.NewTextMessage("Status message: "+profile.StatusMessage),
@@ -158,7 +158,7 @@ func (app *KitchenSink) handleText(message *linebot.TextMessage, replyToken stri
 			return app.replyText(replyToken, "Bot can't use profile API without user ID")
 		}
 	case "buttons":
-		imageURL := app.appBaseURL + "/static/buttons/1040.jpg"
+		imageURL := app.AppBaseURL + "/static/buttons/1040.jpg"
 		template := linebot.NewButtonsTemplate(
 			imageURL, "My button sample", "Hello, my button",
 			linebot.NewURIAction("Go to line.me", "https://line.me"),
@@ -185,7 +185,7 @@ func (app *KitchenSink) handleText(message *linebot.TextMessage, replyToken stri
 			return err
 		}
 	case "carousel":
-		imageURL := app.appBaseURL + "/static/buttons/1040.jpg"
+		imageURL := app.AppBaseURL + "/static/buttons/1040.jpg"
 		template := linebot.NewCarouselTemplate(
 			linebot.NewCarouselColumn(
 				imageURL, "hoge", "fuga",
@@ -205,7 +205,7 @@ func (app *KitchenSink) handleText(message *linebot.TextMessage, replyToken stri
 			return err
 		}
 	case "image carousel":
-  		imageURL := app.appBaseURL + "/static/buttons/1040.jpg"
+  		imageURL := app.AppBaseURL + "/static/buttons/1040.jpg"
 		template := linebot.NewImageCarouselTemplate(
 			linebot.NewImageCarouselColumn(
 				imageURL,
@@ -224,7 +224,7 @@ func (app *KitchenSink) handleText(message *linebot.TextMessage, replyToken stri
 				linebot.NewDatetimePickerAction("datetime", "DATETIME", "datetime", "", "", ""),
 			),
 		)
-		if _, err := app.bot.ReplyMessage(
+		if _, err := app.Bot.ReplyMessage(
 			replyToken,
 			linebot.NewTemplateMessage("Image carousel alt text", template),
 		).Do(); err != nil {
@@ -347,7 +347,7 @@ func (app *KitchenSink) handleText(message *linebot.TextMessage, replyToken stri
 				},
 			},
 		}
-		if _, err := app.bot.ReplyMessage(
+		if _, err := app.Bot.ReplyMessage(
 			replyToken,
 			linebot.NewFlexMessage("Flex message alt text", contents),
 		).Do(); err != nil {
@@ -518,10 +518,10 @@ func (app *KitchenSink) handleText(message *linebot.TextMessage, replyToken stri
 			return err
 		}
 	case "imagemap":
-		if _, err := app.bot.ReplyMessage(
+		if _, err := app.Bot.ReplyMessage(
 			replyToken,
 			linebot.NewImagemapMessage(
-				app.appBaseURL+"/static/rich",
+				app.AppBaseURL+"/static/rich",
 				"Imagemap alt text",
 				linebot.ImagemapBaseSize{Width: 1040, Height: 1040},
 				linebot.NewURIImagemapAction("LINE Store Manga", "https://store.line.me/family/manga/en", linebot.ImagemapArea{X: 0, Y: 0, Width: 520, Height: 520}),
@@ -533,10 +533,10 @@ func (app *KitchenSink) handleText(message *linebot.TextMessage, replyToken stri
 			return err
 		}
 	case "imagemap video":
-		if _, err := app.bot.ReplyMessage(
+		if _, err := app.Bot.ReplyMessage(
 			replyToken,
 			linebot.NewImagemapMessage(
-				app.appBaseURL+"/static/rich",
+				app.AppBaseURL+"/static/rich",
 				"Imagemap with video alt text",
 				linebot.ImagemapBaseSize{Width: 1040, Height: 1040},
 				linebot.NewURIImagemapAction("LINE Store Manga", "https://store.line.me/family/manga/en", linebot.ImagemapArea{X: 0, Y: 0, Width: 520, Height: 520}),
@@ -544,8 +544,8 @@ func (app *KitchenSink) handleText(message *linebot.TextMessage, replyToken stri
 				linebot.NewURIImagemapAction("LINE Store Play", "https://store.line.me/family/play/en", linebot.ImagemapArea{X: 0, Y: 520, Width: 520, Height: 520}),
 				linebot.NewMessageImagemapAction("URANAI!", "URANAI!", linebot.ImagemapArea{X: 520, Y: 520, Width: 520, Height: 520}),
 			).WithVideo(&linebot.ImagemapVideo{
-				OriginalContentURL: app.appBaseURL + "/static/imagemap/video.mp4",
-				PreviewImageURL:    app.appBaseURL + "/static/imagemap/preview.jpg",
+				OriginalContentURL: app.AppBaseURL + "/static/imagemap/video.mp4",
+				PreviewImageURL:    app.AppBaseURL + "/static/imagemap/preview.jpg",
 				Area:               linebot.ImagemapArea{X: 280, Y: 385, Width: 480, Height: 270},
 				ExternalLink:       &linebot.ImagemapVideoExternalLink{LinkURI: "https://line.me", Label: "LINE"},
 			}),
@@ -553,15 +553,15 @@ func (app *KitchenSink) handleText(message *linebot.TextMessage, replyToken stri
 			return err
 		}
 	case "quick":
-		if _, err := app.bot.ReplyMessage(
+		if _, err := app.Bot.ReplyMessage(
 			replyToken,
 			linebot.NewTextMessage("Select your favorite food category or send me your location!").
 				WithQuickReplies(linebot.NewQuickReplyItems(
 					linebot.NewQuickReplyButton(
-						app.appBaseURL+"/static/quick/sushi.png",
+						app.AppBaseURL+"/static/quick/sushi.png",
 						linebot.NewMessageAction("Sushi", "Sushi")),
 					linebot.NewQuickReplyButton(
-						app.appBaseURL+"/static/quick/tempura.png",
+						app.AppBaseURL+"/static/quick/tempura.png",
 						linebot.NewMessageAction("Tempura", "Tempura")),
 					linebot.NewQuickReplyButton(
 						"",
@@ -588,13 +588,13 @@ func (app *KitchenSink) handleText(message *linebot.TextMessage, replyToken stri
 			if err := app.replyText(replyToken, "Leaving room"); err != nil {
 				return err
 			}
-			if _, err := app.bot.LeaveRoom(source.RoomID).Do(); err != nil {
+			if _, err := app.Bot.LeaveRoom(source.RoomID).Do(); err != nil {
 				return app.replyText(replyToken, err.Error())
 			}
 		}
 	default:
 		log.Printf("Echo message to %s: %s", replyToken, message.Text)
-		if _, err := app.bot.ReplyMessage(
+		if _, err := app.Bot.ReplyMessage(
 			replyToken,
 			linebot.NewTextMessage(message.Text),
 		).Do(); err != nil {
@@ -614,9 +614,9 @@ func (app *KitchenSink) handleImage(message *linebot.ImageMessage, replyToken st
 			return err
 		}
 
-		originalContentURL := app.appBaseURL + "/downloaded/" + filepath.Base(originalContent.Name())
-		previewImageURL := app.appBaseURL + "/downloaded/" + filepath.Base(previewImagePath)
-		if _, err := app.bot.ReplyMessage(
+		originalContentURL := app.AppBaseURL + "/downloaded/" + filepath.Base(originalContent.Name())
+		previewImageURL := app.AppBaseURL + "/downloaded/" + filepath.Base(previewImagePath)
+		if _, err := app.Bot.ReplyMessage(
 			replyToken,
 			linebot.NewImageMessage(originalContentURL, previewImageURL),
 		).Do(); err != nil {
@@ -636,9 +636,9 @@ func (app *KitchenSink) handleVideo(message *linebot.VideoMessage, replyToken st
 			return err
 		}
 
-		originalContentURL := app.appBaseURL + "/downloaded/" + filepath.Base(originalContent.Name())
-		previewImageURL := app.appBaseURL + "/downloaded/" + filepath.Base(previewImagePath)
-		if _, err := app.bot.ReplyMessage(
+		originalContentURL := app.AppBaseURL + "/downloaded/" + filepath.Base(originalContent.Name())
+		previewImageURL := app.AppBaseURL + "/downloaded/" + filepath.Base(previewImagePath)
+		if _, err := app.Bot.ReplyMessage(
 			replyToken,
 			linebot.NewVideoMessage(originalContentURL, previewImageURL),
 		).Do(); err != nil {
@@ -650,8 +650,8 @@ func (app *KitchenSink) handleVideo(message *linebot.VideoMessage, replyToken st
 
 func (app *KitchenSink) handleAudio(message *linebot.AudioMessage, replyToken string) error {
 	return app.handleHeavyContent(message.ID, func(originalContent *os.File) error {
-		originalContentURL := app.appBaseURL + "/downloaded/" + filepath.Base(originalContent.Name())
-		if _, err := app.bot.ReplyMessage(
+		originalContentURL := app.AppBaseURL + "/downloaded/" + filepath.Base(originalContent.Name())
+		if _, err := app.Bot.ReplyMessage(
 			replyToken,
 			linebot.NewAudioMessage(originalContentURL, 100),
 		).Do(); err != nil {
@@ -666,7 +666,7 @@ func (app *KitchenSink) handleFile(message *linebot.FileMessage, replyToken stri
 }
 
 func (app *KitchenSink) handleLocation(message *linebot.LocationMessage, replyToken string) error {
-	if _, err := app.bot.ReplyMessage(
+	if _, err := app.Bot.ReplyMessage(
 		replyToken,
 		linebot.NewLocationMessage(message.Title, message.Address, message.Latitude, message.Longitude),
 	).Do(); err != nil {
@@ -676,7 +676,7 @@ func (app *KitchenSink) handleLocation(message *linebot.LocationMessage, replyTo
 }
 
 func (app *KitchenSink) handleSticker(message *linebot.StickerMessage, replyToken string) error {
-	if _, err := app.bot.ReplyMessage(
+	if _, err := app.Bot.ReplyMessage(
 		replyToken,
 		linebot.NewStickerMessage(message.PackageID, message.StickerID),
 	).Do(); err != nil {
@@ -686,7 +686,7 @@ func (app *KitchenSink) handleSticker(message *linebot.StickerMessage, replyToke
 }
 
 func (app *KitchenSink) replyText(replyToken, text string) error {
-	if _, err := app.bot.ReplyMessage(
+	if _, err := app.Bot.ReplyMessage(
 		replyToken,
 		linebot.NewTextMessage(text),
 	).Do(); err != nil {
@@ -696,7 +696,7 @@ func (app *KitchenSink) replyText(replyToken, text string) error {
 }
 
 func (app *KitchenSink) handleHeavyContent(messageID string, callback func(*os.File) error) error {
-	content, err := app.bot.GetMessageContent(messageID).Do()
+	content, err := app.Bot.GetMessageContent(messageID).Do()
 	if err != nil {
 		return err
 	}
@@ -710,7 +710,7 @@ func (app *KitchenSink) handleHeavyContent(messageID string, callback func(*os.F
 }
 
 func (app *KitchenSink) saveContent(content io.ReadCloser) (*os.File, error) {
-	file, err := ioutil.TempFile(app.downloadDir, "")
+	file, err := ioutil.TempFile(app.DownloadDir, "")
 	if err != nil {
 		return nil, err
 	}
