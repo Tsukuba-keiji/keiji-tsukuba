@@ -27,31 +27,6 @@ import (
 	"github.com/line/line-bot-sdk-go/v7/linebot"
 )
 
-func Gokitchensink() {
-	app, err := NewKitchenSink(
-		os.Getenv("LINE_CHANNEL_SECRET"),
-		os.Getenv("LINE_CHANNEL_ACCESS_TOKEN"),
-		os.Getenv("APP_BASE_URL"),
-	)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	// serve /static/** files
-	staticFileServer := http.FileServer(http.Dir("/static"))
-	http.HandleFunc("/static/", http.StripPrefix("/static/", staticFileServer).ServeHTTP)
-	// serve /downloaded/** files
-	downloadedFileServer := http.FileServer(http.Dir(app.downloadDir))
-	http.HandleFunc("/downloaded/", http.StripPrefix("/downloaded/", downloadedFileServer).ServeHTTP)
-
-	http.HandleFunc("/callback", app.Callback)
-	// This is just a sample code.
-	// For actually use, you must support HTTPS by using `ListenAndServeTLS`, reverse proxy or etc.
-	if err := http.ListenAndServe(":"+os.Getenv("PORT"), nil); err != nil {
-		log.Fatal(err)
-	}
-}
-
 // KitchenSink app
 type KitchenSink struct {
 	bot         *linebot.Client
@@ -183,7 +158,7 @@ func (app *KitchenSink) handleText(message *linebot.TextMessage, replyToken stri
 			return app.replyText(replyToken, "Bot can't use profile API without user ID")
 		}
 	case "buttons":
-		imageURL := app.appBaseURL + "/src/line/static/buttons/1040.jpg"
+		imageURL := app.appBaseURL + "/static/buttons/1040.jpg"
 		template := linebot.NewButtonsTemplate(
 			imageURL, "My button sample", "Hello, my button",
 			linebot.NewURIAction("Go to line.me", "https://line.me"),
@@ -210,7 +185,7 @@ func (app *KitchenSink) handleText(message *linebot.TextMessage, replyToken stri
 			return err
 		}
 	case "carousel":
-		imageURL := app.appBaseURL + "/src/line/static/buttons/1040.jpg"
+		imageURL := app.appBaseURL + "/static/buttons/1040.jpg"
 		template := linebot.NewCarouselTemplate(
 			linebot.NewCarouselColumn(
 				imageURL, "hoge", "fuga",
@@ -230,7 +205,7 @@ func (app *KitchenSink) handleText(message *linebot.TextMessage, replyToken stri
 			return err
 		}
 	case "image carousel":
-		imageURL := app.appBaseURL + "/src/line/static/buttons/1040.jpg"
+  		imageURL := app.appBaseURL + "/static/buttons/1040.jpg"
 		template := linebot.NewImageCarouselTemplate(
 			linebot.NewImageCarouselColumn(
 				imageURL,
@@ -546,7 +521,7 @@ func (app *KitchenSink) handleText(message *linebot.TextMessage, replyToken stri
 		if _, err := app.bot.ReplyMessage(
 			replyToken,
 			linebot.NewImagemapMessage(
-				app.appBaseURL+"/src/line/static/rich",
+				app.appBaseURL+"/static/rich",
 				"Imagemap alt text",
 				linebot.ImagemapBaseSize{Width: 1040, Height: 1040},
 				linebot.NewURIImagemapAction("LINE Store Manga", "https://store.line.me/family/manga/en", linebot.ImagemapArea{X: 0, Y: 0, Width: 520, Height: 520}),
@@ -561,7 +536,7 @@ func (app *KitchenSink) handleText(message *linebot.TextMessage, replyToken stri
 		if _, err := app.bot.ReplyMessage(
 			replyToken,
 			linebot.NewImagemapMessage(
-				app.appBaseURL+"/src/line/static/rich",
+				app.appBaseURL+"/static/rich",
 				"Imagemap with video alt text",
 				linebot.ImagemapBaseSize{Width: 1040, Height: 1040},
 				linebot.NewURIImagemapAction("LINE Store Manga", "https://store.line.me/family/manga/en", linebot.ImagemapArea{X: 0, Y: 0, Width: 520, Height: 520}),
@@ -569,8 +544,8 @@ func (app *KitchenSink) handleText(message *linebot.TextMessage, replyToken stri
 				linebot.NewURIImagemapAction("LINE Store Play", "https://store.line.me/family/play/en", linebot.ImagemapArea{X: 0, Y: 520, Width: 520, Height: 520}),
 				linebot.NewMessageImagemapAction("URANAI!", "URANAI!", linebot.ImagemapArea{X: 520, Y: 520, Width: 520, Height: 520}),
 			).WithVideo(&linebot.ImagemapVideo{
-				OriginalContentURL: app.appBaseURL + "/src/line/static/imagemap/video.mp4",
-				PreviewImageURL:    app.appBaseURL + "/src/line/static/imagemap/preview.jpg",
+				OriginalContentURL: app.appBaseURL + "/static/imagemap/video.mp4",
+				PreviewImageURL:    app.appBaseURL + "/static/imagemap/preview.jpg",
 				Area:               linebot.ImagemapArea{X: 280, Y: 385, Width: 480, Height: 270},
 				ExternalLink:       &linebot.ImagemapVideoExternalLink{LinkURI: "https://line.me", Label: "LINE"},
 			}),
@@ -583,10 +558,10 @@ func (app *KitchenSink) handleText(message *linebot.TextMessage, replyToken stri
 			linebot.NewTextMessage("Select your favorite food category or send me your location!").
 				WithQuickReplies(linebot.NewQuickReplyItems(
 					linebot.NewQuickReplyButton(
-						app.appBaseURL+"/src/line/static/quick/sushi.png",
+						app.appBaseURL+"/static/quick/sushi.png",
 						linebot.NewMessageAction("Sushi", "Sushi")),
 					linebot.NewQuickReplyButton(
-						app.appBaseURL+"/src/line/static/quick/tempura.png",
+						app.appBaseURL+"/static/quick/tempura.png",
 						linebot.NewMessageAction("Tempura", "Tempura")),
 					linebot.NewQuickReplyButton(
 						"",
