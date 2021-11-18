@@ -18,49 +18,30 @@ import "github.com/Tsukuba-keiji/keiji-tsukuba/src/line"
 
 func main() {
   
-  //driveapi.url = https://script.google.com/macros/s/AKfycbwJziq-iSL2Kcc63TKhZd40FF2IcDmvsogulW7kayn6lXk_XaD1iO6QfqTTSnr4EoNT/exec
-  
-	/*bot, err := linebot.New(
+  app, err := line.NewKitchenSink(
 		os.Getenv("LINE_CHANNEL_SECRET"),
 		os.Getenv("LINE_CHANNEL_ACCESS_TOKEN"),
+		os.Getenv("APP_BASE_URL"),
 	)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// Setup HTTP Server for receiving requests from LINE platform
-	http.HandleFunc("/callback", func(w http.ResponseWriter, req *http.Request) {
-		events, err := bot.ParseRequest(req)
-		if err != nil {
-			if err == linebot.ErrInvalidSignature {
-				w.WriteHeader(400)
-			} else {
-				w.WriteHeader(500)
-			}
-			return
-		}
-		for _, event := range events {
-			if event.Type == linebot.EventTypeMessage {
-				switch message := event.Message.(type) {
-				case *linebot.TextMessage:
-					if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(message.Text)).Do(); err != nil {
-						log.Print(err)
-					}
-				case *linebot.StickerMessage:
-					replyMessage := fmt.Sprintf(
-						"sticker id is %s, stickerResourceType is %s", message.StickerID, message.StickerResourceType)
-					if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(replyMessage)).Do(); err != nil {
-						log.Print(err)
-					}
-				}
-			}
-		}
-	})
-	// This is just sample code.
-	// For actual use, you must support HTTPS by using `ListenAndServeTLS`, a reverse proxy or something else.
+	// serve /static/** files
+	staticFileServer := http.FileServer(http.Dir("/static"))
+	http.HandleFunc("/static/", http.StripPrefix("/static/", staticFileServer).ServeHTTP)
+
+	// serve /downloaded/** files
+	downloadedFileServer := http.FileServer(http.Dir(app.downloadDir))
+	http.HandleFunc("/downloaded/", http.StripPrefix("/downloaded/", downloadedFileServer).ServeHTTP)
+
+	http.HandleFunc("/callback", app.Callback)
+	// This is just a sample code.
+	// For actually use, you must support HTTPS by using `ListenAndServeTLS`, reverse proxy or etc.
+	
 	if err := http.ListenAndServe(":"+os.Getenv("PORT"), nil); err != nil {
 		log.Fatal(err)
-	}*/
+	}
 	
-	line.Gokitchensink()
+  //driveapi.url = https://script.google.com/macros/s/AKfycbwJziq-iSL2Kcc63TKhZd40FF2IcDmvsogulW7kayn6lXk_XaD1iO6QfqTTSnr4EoNT/exec
 }
