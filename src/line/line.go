@@ -28,7 +28,7 @@ import (
 )
 
 func LineServer(){
-  app, err := line.NewKitchenSink(
+  app, err := NewKitchenSink(
 		os.Getenv("LINE_CHANNEL_SECRET"),
 		os.Getenv("LINE_CHANNEL_ACCESS_TOKEN"),
 		os.Getenv("APP_BASE_URL"),
