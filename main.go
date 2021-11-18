@@ -14,7 +14,19 @@
 
 package main
 
-import "github.com/Tsukuba-keiji/keiji-tsukuba/src/line"
+import (
+	"fmt"
+	"io"
+	"io/ioutil"
+	"log"
+	"net/http"
+	"os"
+	"os/exec"
+	"path/filepath"
+
+	"github.com/line/line-bot-sdk-go/v7/linebot"
+	"github.com/Tsukuba-keiji/keiji-tsukuba/src/line"
+)
 
 func main() {
   
