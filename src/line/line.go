@@ -28,7 +28,7 @@ import (
 )
 
 func LineServer(){
-  app, err := NewKitchenSink(
+  app, err := line.NewKitchenSink(
 		os.Getenv("LINE_CHANNEL_SECRET"),
 		os.Getenv("LINE_CHANNEL_ACCESS_TOKEN"),
 		os.Getenv("APP_BASE_URL"),
@@ -42,6 +42,10 @@ func LineServer(){
 	http.HandleFunc("/downloaded/", http.StripPrefix("/downloaded/", downloadedFileServer).ServeHTTP)
 
 	http.HandleFunc("/callback", app.Callback)
+	
+	if err := http.ListenAndServe(":"+os.Getenv("PORT"), nil); err != nil {
+		log.Fatal(err)
+	}
 }
 
 // KitchenSink app
