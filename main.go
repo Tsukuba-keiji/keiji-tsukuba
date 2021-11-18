@@ -16,6 +16,8 @@ package main
 
 import (
 	"net/http"
+	"os"
+	"log"
 	"github.com/Tsukuba-keiji/keiji-tsukuba/src/line"
 )
 
@@ -27,6 +29,8 @@ func main() {
 	if err := http.ListenAndServe(":"+os.Getenv("PORT"), nil); err != nil {
 		log.Fatal(err)
 	}
+	
+	line.LineServer()
 	
   //driveapi.url = https://script.google.com/macros/s/AKfycbwJziq-iSL2Kcc63TKhZd40FF2IcDmvsogulW7kayn6lXk_XaD1iO6QfqTTSnr4EoNT/exec
 }
