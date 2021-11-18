@@ -27,6 +27,23 @@ import (
 	"github.com/line/line-bot-sdk-go/v7/linebot"
 )
 
+func LineServer(){
+  app, err := line.NewKitchenSink(
+		os.Getenv("LINE_CHANNEL_SECRET"),
+		os.Getenv("LINE_CHANNEL_ACCESS_TOKEN"),
+		os.Getenv("APP_BASE_URL"),
+	)
+	if err != nil {
+		log.Fatal(err)
+	}
+	
+	// serve /downloaded/** files
+	downloadedFileServer := http.FileServer(http.Dir(app.DownloadDir))
+	http.HandleFunc("/downloaded/", http.StripPrefix("/downloaded/", downloadedFileServer).ServeHTTP)
+
+	http.HandleFunc("/callback", app.Callback)
+}
+
 // KitchenSink app
 type KitchenSink struct {
 	Bot         *linebot.Client
@@ -166,7 +183,7 @@ func (app *KitchenSink) handleText(message *linebot.TextMessage, replyToken stri
 			linebot.NewPostbackAction("言 hello2", "hello こんにちは", "hello こんにちは", ""),
 			linebot.NewMessageAction("Say message", "Rice=米"),
 		)
-		if _, err := app.bot.ReplyMessage(
+		if _, err := app.Bot.ReplyMessage(
 			replyToken,
 			linebot.NewTemplateMessage("Buttons alt text", template),
 		).Do(); err != nil {
@@ -178,7 +195,7 @@ func (app *KitchenSink) handleText(message *linebot.TextMessage, replyToken stri
 			linebot.NewMessageAction("Yes", "Yes!"),
 			linebot.NewMessageAction("No", "No!"),
 		)
-		if _, err := app.bot.ReplyMessage(
+		if _, err := app.Bot.ReplyMessage(
 			replyToken,
 			linebot.NewTemplateMessage("Confirm alt text", template),
 		).Do(); err != nil {
@@ -198,7 +215,7 @@ func (app *KitchenSink) handleText(message *linebot.TextMessage, replyToken stri
 				linebot.NewMessageAction("Say message", "Rice=米"),
 			),
 		)
-		if _, err := app.bot.ReplyMessage(
+		if _, err := app.Bot.ReplyMessage(
 			replyToken,
 			linebot.NewTemplateMessage("Carousel alt text", template),
 		).Do(); err != nil {
@@ -237,7 +254,7 @@ func (app *KitchenSink) handleText(message *linebot.TextMessage, replyToken stri
 			linebot.NewDatetimePickerAction("time", "TIME", "time", "", "", ""),
 			linebot.NewDatetimePickerAction("datetime", "DATETIME", "datetime", "", "", ""),
 		)
-		if _, err := app.bot.ReplyMessage(
+		if _, err := app.Bot.ReplyMessage(
 			replyToken,
 			linebot.NewTemplateMessage("Datetime pickers alt text", template),
 		).Do(); err != nil {
@@ -278,7 +295,7 @@ func (app *KitchenSink) handleText(message *linebot.TextMessage, replyToken stri
 				},
 			},
 		}
-		if _, err := app.bot.ReplyMessage(
+		if _, err := app.Bot.ReplyMessage(
 			replyToken,
 			linebot.NewFlexMessage("Flex message alt text", contents),
 		).Do(); err != nil {
@@ -511,7 +528,7 @@ func (app *KitchenSink) handleText(message *linebot.TextMessage, replyToken stri
 		if err != nil {
 			return err
 		}
-		if _, err := app.bot.ReplyMessage(
+		if _, err := app.Bot.ReplyMessage(
 			replyToken,
 			linebot.NewFlexMessage("Flex message alt text", contents),
 		).Do(); err != nil {
@@ -581,7 +598,7 @@ func (app *KitchenSink) handleText(message *linebot.TextMessage, replyToken stri
 			if err := app.replyText(replyToken, "Leaving group"); err != nil {
 				return err
 			}
-			if _, err := app.bot.LeaveGroup(source.GroupID).Do(); err != nil {
+			if _, err := app.Bot.LeaveGroup(source.GroupID).Do(); err != nil {
 				return app.replyText(replyToken, err.Error())
 			}
 		case linebot.EventSourceTypeRoom:
