@@ -14,13 +14,7 @@
 
 package main
 
-import (
-	"log"
-	"net/http"
-	"os"
-
-	"github.com/Tsukuba-keiji/keiji-tsukuba/src/line"
-)
+import "github.com/Tsukuba-keiji/keiji-tsukuba/src/line"
 
 func main() {
   
@@ -38,7 +32,7 @@ func main() {
 	http.HandleFunc("/static/", http.StripPrefix("/static/", staticFileServer).ServeHTTP)
 
 	// serve /downloaded/** files
-	downloadedFileServer := http.FileServer(http.Dir(app.downloadDir))
+	downloadedFileServer := http.FileServer(http.Dir(app.DownloadDir))
 	http.HandleFunc("/downloaded/", http.StripPrefix("/downloaded/", downloadedFileServer).ServeHTTP)
 
 	http.HandleFunc("/callback", app.Callback)
