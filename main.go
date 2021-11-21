@@ -29,8 +29,8 @@ import (
 
 func main() {
 	app, err := NewKitchenSink(
-		os.Getenv("LINE_CHANNEL_SECRET"),
-		os.Getenv("LINE_CHANNEL_ACCESS_TOKEN"),
+		os.Getenv("CHANNEL_SECRET"),
+		os.Getenv("CHANNEL_TOKEN"),
 		os.Getenv("APP_BASE_URL"),
 	)
 	if err != nil {
