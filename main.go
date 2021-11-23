@@ -546,7 +546,7 @@ func (app *KitchenSink) handleText(message *linebot.TextMessage, replyToken stri
 		if _, err := app.bot.ReplyMessage(
 			replyToken,
 			linebot.NewImagemapMessage(
-				app.appBaseURL+"/static/rich",
+				app.appBaseURL+"static/rich",
 				"Imagemap alt text",
 				linebot.ImagemapBaseSize{Width: 1040, Height: 1040},
 				linebot.NewURIImagemapAction("LINE Store Manga", "https://store.line.me/family/manga/en", linebot.ImagemapArea{X: 0, Y: 0, Width: 520, Height: 520}),
