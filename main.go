@@ -45,7 +45,7 @@ func main() {
 	http.HandleFunc("/downloaded/", http.StripPrefix("/downloaded/", downloadedFileServer).ServeHTTP)
 	// serve /assets/** files
 	assetsFileServer := http.FileServer(http.Dir("assets"))
-	http.HandleFunc("/assets/", http.StripPrefix("/assets/", assetsFileServer).ServeHTTP)
+	http.HandleFunc("/", http.StripPrefix("/assets/", assetsFileServer).ServeHTTP)
 	
 	http.HandleFunc("/callback", app.Callback)
 	// This is just a sample code.
