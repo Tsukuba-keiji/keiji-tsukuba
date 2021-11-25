@@ -174,7 +174,7 @@ func (app *KitchenSink) Callback(w http.ResponseWriter, r *http.Request) {
 						),
 					)
 					if _, err := app.bot.ReplyMessage(
-						event.replyToken,
+						event.ReplyToken,
 						linebot.NewTemplateMessage("Carousel alt text", template),
 					).Do(); err != nil {
 						return err
