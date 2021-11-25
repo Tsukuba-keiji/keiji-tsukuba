@@ -160,7 +160,7 @@ func (app *KitchenSink) Callback(w http.ResponseWriter, r *http.Request) {
 			
 			switch data {
 				case "search":
-					imageURL := app.BaseURL + "/static/img/config.png" 
+					imageURL := app.appBaseURL + "/static/img/config.png" 
 					template := linebot.NewCarouselTemplate(
 						linebot.NewCarouselColumn(
 							imageURL, "hoge", "fuga",
@@ -174,13 +174,12 @@ func (app *KitchenSink) Callback(w http.ResponseWriter, r *http.Request) {
 						),
 					)
 					if _, err := app.bot.ReplyMessage(
-						replyToken,
+						event.replyToken,
 						linebot.NewTemplateMessage("Carousel alt text", template),
 					).Do(); err != nil {
 						return err
 					}
-				case "add":
-					pass
+				//case "add":
 				default:
 					log.Print("Unknown event : %v" , data)
 			}
