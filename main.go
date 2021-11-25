@@ -177,7 +177,7 @@ func (app *KitchenSink) Callback(w http.ResponseWriter, r *http.Request) {
 						event.ReplyToken,
 						linebot.NewTemplateMessage("Carousel alt text", template),
 					).Do(); err != nil {
-						return err
+						log.Print(err)
 					}
 				//case "add":
 				default:
