@@ -160,7 +160,25 @@ func (app *KitchenSink) Callback(w http.ResponseWriter, r *http.Request) {
 			
 			switch data {
 				case "search":
-					pass
+					imageURL := app.BaseURL + "/static/img/config.png" 
+					template := linebot.NewCarouselTemplate(
+						linebot.NewCarouselColumn(
+							imageURL, "hoge", "fuga",
+							linebot.NewURIAction("Go to line.me", "https://line.me"),
+							linebot.NewPostbackAction("Say hello1", "hello こんにちは", "", ""),
+						),
+						linebot.NewCarouselColumn(
+							imageURL, "hoge", "fuga",
+							linebot.NewPostbackAction("言 hello2", "hello こんにちは", "hello こんにちは", ""),
+							linebot.NewMessageAction("Say message", "Rice=米"),
+						),
+					)
+					if _, err := app.bot.ReplyMessage(
+						replyToken,
+						linebot.NewTemplateMessage("Carousel alt text", template),
+					).Do(); err != nil {
+						return err
+					}
 				case "add":
 					pass
 				default:
