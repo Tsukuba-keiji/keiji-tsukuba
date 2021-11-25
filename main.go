@@ -90,11 +90,6 @@ func NewKitchenSink(channelSecret, channelToken, appBaseURL string) (*KitchenSin
 	}, nil
 }
 
-type config struct {
-	grade int
-	class int
-}
-
 // Callback function for http server
 func (app *KitchenSink) Callback(w http.ResponseWriter, r *http.Request) {
 	events, err := app.bot.ParseRequest(r)
