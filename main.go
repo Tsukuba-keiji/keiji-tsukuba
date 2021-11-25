@@ -163,19 +163,27 @@ func (app *KitchenSink) Callback(w http.ResponseWriter, r *http.Request) {
 					imageURL := app.appBaseURL + "/static/img/config.png" 
 					template := linebot.NewCarouselTemplate(
 						linebot.NewCarouselColumn(
-							imageURL, "hoge", "fuga",
-							linebot.NewURIAction("Go to line.me", "https://line.me"),
-							linebot.NewPostbackAction("Say hello1", "hello こんにちは", "", ""),
+							imageURL, "学年を選択", "情報を受け取る学年を全て選んでください",
+							linebot.NewPostbackAction("一年生", "grade=1", "", ""),
+							linebot.NewPostbackAction("二年生", "grade=2", "", ""),
+							linebot.NewPostbackAction("三年生", "grade=3", "", ""),
 						),
 						linebot.NewCarouselColumn(
-							imageURL, "hoge", "fuga",
-							linebot.NewPostbackAction("言 hello2", "hello こんにちは", "hello こんにちは", ""),
-							linebot.NewMessageAction("Say message", "Rice=米"),
+							imageURL, "クラスを選択", "情報を受け取るクラスを全て選んでください",
+							linebot.NewPostbackAction("一組", "class=1", "", ""),
+							linebot.NewPostbackAction("二組", "class=2", "", ""),
+							linebot.NewPostbackAction("三組", "class=3", "", ""),
+						),
+						linebot.NewCarouselColumn(
+							imageURL, "クラスを選択", "情報を受け取るクラスを全て選んでください",
+							linebot.NewPostbackAction("四組", "class=4", "", ""),
+							linebot.NewPostbackAction("五組", "class=5", "", ""),
+							linebot.NewPostbackAction("六組", "class=6", "", ""),
 						),
 					)
 					if _, err := app.bot.ReplyMessage(
 						event.ReplyToken,
-						linebot.NewTemplateMessage("Carousel alt text", template),
+						linebot.NewTemplateMessage("検索設定", template),
 					).Do(); err != nil {
 						log.Print(err)
 					}
