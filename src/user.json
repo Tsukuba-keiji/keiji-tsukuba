@@ -1,1 +1,8 @@
-{}
+{
+    "sample_user_id":[
+        {
+            "grade": "1",
+            "class": "6"
+        }
+    ]
+}
