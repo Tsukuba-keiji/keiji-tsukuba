@@ -164,9 +164,11 @@ func (app *KitchenSink) Callback(w http.ResponseWriter, r *http.Request) {
 				jsondata := loadJson("src/user.json")
 				fmt.Println(jsondata)
 				if _, exist := jsondata.(map[string]interface{})[event.Source.UserID]; !exist {
+					fmt.Println("if1 clear")
 					_, existg := jsondata.(map[string]interface{})[event.Source.UserID].([]interface{})[0].(map[string]interface{})["grade"]
 					_, existc := jsondata.(map[string]interface{})[event.Source.UserID].([]interface{})[0].(map[string]interface{})["class"]
 					if !(existc || existg) {
+						fmt.Println("if2 clear")
 						imageURL := app.appBaseURL + "/static/img/config.png"
 						template := linebot.NewCarouselTemplate(
 							linebot.NewCarouselColumn(
