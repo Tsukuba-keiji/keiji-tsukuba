@@ -242,6 +242,13 @@ func (app *KitchenSink) Callback(w http.ResponseWriter, r *http.Request) {
 						log.Print(err)
 					}
 				}
+			} else if data == "add" {
+				if _, err := app.bot.ReplyMessage(
+					event.ReplyToken,
+					linebot.NewTextMessage("データを入力してください"),
+				).Do(); err != nil {
+					log.Print(err)
+				}
 			} else if data[:5] == "grade" {
 				jsondata := loadJson("src/user.json")
 				jsondata.(map[string]interface{})[event.Source.UserID].([]interface{})[0].(map[string]interface{})["grade"] = data[5:]
@@ -259,13 +266,6 @@ func (app *KitchenSink) Callback(w http.ResponseWriter, r *http.Request) {
 				if _, err := app.bot.ReplyMessage(
 					event.ReplyToken,
 					linebot.NewTextMessage("クラスを"+data[5:]+"として設定しました。"),
-				).Do(); err != nil {
-					log.Print(err)
-				}
-			} else if data == "add" {
-				if _, err := app.bot.ReplyMessage(
-					event.ReplyToken,
-					linebot.NewTextMessage("データを入力してください"),
 				).Do(); err != nil {
 					log.Print(err)
 				}
