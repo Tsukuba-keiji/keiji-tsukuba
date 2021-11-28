@@ -152,6 +152,7 @@ func (app *KitchenSink) Callback(w http.ResponseWriter, r *http.Request) {
 			// 			log.Printf("Left: %v", event)
 		case linebot.EventTypePostback:
 			data := event.Postback.Data
+			fmt.Println(data)
 			// 			if data == "DATE" || data == "TIME" || data == "DATETIME" {
 			// 				data += fmt.Sprintf("(%v)", *event.Postback.Params)
 			// 			}
