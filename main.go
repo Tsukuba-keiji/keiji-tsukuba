@@ -261,6 +261,13 @@ func (app *KitchenSink) Callback(w http.ResponseWriter, r *http.Request) {
 				).Do(); err != nil {
 					log.Print(err)
 				}
+			} else if data == "add" {
+				if _, err := app.bot.ReplyMessage(
+					event.ReplyToken,
+					linebot.NewTextMessage("データを入力してください"),
+				).Do(); err != nil {
+					log.Print(err)
+				}
 			} else {
 				log.Printf("Unknown event : %v", data)
 			}
