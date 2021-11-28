@@ -162,42 +162,51 @@ func (app *KitchenSink) Callback(w http.ResponseWriter, r *http.Request) {
 
 			if data == "search" {
 				jsondata := loadJson("src/user.json")
-				fmt.Println(jsondata)
 				if _, exist := jsondata.(map[string]interface{})[event.Source.UserID]; !exist {
-					fmt.Println("if1 clear")
+					imageURL := app.appBaseURL + "/static/img/config.png"
+					template := linebot.NewCarouselTemplate(
+						linebot.NewCarouselColumn(
+							imageURL, "学年を選択", "情報を受け取る学年を全て選んでください",
+							linebot.NewPostbackAction("一年生", "grade=1", "", ""),
+							linebot.NewPostbackAction("二年生", "grade=2", "", ""),
+							linebot.NewPostbackAction("三年生", "grade=3", "", ""),
+						),
+						linebot.NewCarouselColumn(
+							imageURL, "クラスを選択", "情報を受け取るクラスを全て選んでください",
+							linebot.NewPostbackAction("一組", "class=1", "", ""),
+							linebot.NewPostbackAction("二組", "class=2", "", ""),
+							linebot.NewPostbackAction("三組", "class=3", "", ""),
+						),
+						linebot.NewCarouselColumn(
+							imageURL, "クラスを選択", "情報を受け取るクラスを全て選んでください",
+							linebot.NewPostbackAction("四組", "class=4", "", ""),
+							linebot.NewPostbackAction("五組", "class=5", "", ""),
+							linebot.NewPostbackAction("六組", "class=6", "", ""),
+						),
+					)
+					usermap := make(map[string]string)
+					slice := []interface{}{usermap}
+					jsondata.(map[string]interface{})[event.Source.UserID] = slice
+					saveJson(jsondata, "src/user.json")
+					if _, err := app.bot.ReplyMessage(
+						event.ReplyToken,
+						linebot.NewTextMessage("学年とクラスを設定してください。完了したらもう一度検索を選択してください。"),
+						linebot.NewTemplateMessage("検索設定", template),
+					).Do(); err != nil {
+						log.Print(err)
+					}
+				} else {
 					_, existg := jsondata.(map[string]interface{})[event.Source.UserID].([]interface{})[0].(map[string]interface{})["grade"]
 					_, existc := jsondata.(map[string]interface{})[event.Source.UserID].([]interface{})[0].(map[string]interface{})["class"]
-					if !(existc || existg) {
-						fmt.Println("if2 clear")
-						imageURL := app.appBaseURL + "/static/img/config.png"
-						template := linebot.NewCarouselTemplate(
-							linebot.NewCarouselColumn(
-								imageURL, "学年を選択", "情報を受け取る学年を全て選んでください",
-								linebot.NewPostbackAction("一年生", "grade=1", "", ""),
-								linebot.NewPostbackAction("二年生", "grade=2", "", ""),
-								linebot.NewPostbackAction("三年生", "grade=3", "", ""),
-							),
-							linebot.NewCarouselColumn(
-								imageURL, "クラスを選択", "情報を受け取るクラスを全て選んでください",
-								linebot.NewPostbackAction("一組", "class=1", "", ""),
-								linebot.NewPostbackAction("二組", "class=2", "", ""),
-								linebot.NewPostbackAction("三組", "class=3", "", ""),
-							),
-							linebot.NewCarouselColumn(
-								imageURL, "クラスを選択", "情報を受け取るクラスを全て選んでください",
-								linebot.NewPostbackAction("四組", "class=4", "", ""),
-								linebot.NewPostbackAction("五組", "class=5", "", ""),
-								linebot.NewPostbackAction("六組", "class=6", "", ""),
-							),
-						)
-						usermap := make(map[string]string)
-						slice := []interface{}{usermap}
-						jsondata.(map[string]interface{})[event.Source.UserID] = slice
-						saveJson(jsondata, "src/user.json")
+					if existc && existg {
+						user := jsondata.(map[string]interface{})[event.Source.UserID].([]interface{})[0]
+						grade := user.(map[string]interface{})["grade"].(string)
+						class := user.(map[string]interface{})["class"].(string)
+						replyurl := "https://keiji-tsukuba.herokuapp.com/search?grade=" + grade + "&class=" + class
 						if _, err := app.bot.ReplyMessage(
 							event.ReplyToken,
-							linebot.NewTextMessage("学年とクラスを設定してください。完了したらもう一度検索を選択してください。"),
-							linebot.NewTemplateMessage("検索設定", template),
+							linebot.NewTextMessage(replyurl),
+							linebot.NewTextMessage("上記URLにて連絡を確認して下さい。"),
 						).Do(); err != nil {
 							log.Print(err)
 						}
@@ -230,18 +239,6 @@ func (app *KitchenSink) Callback(w http.ResponseWriter, r *http.Request) {
 						).Do(); err != nil {
 							log.Print(err)
 						}
-					}
-				} else {
-					user := jsondata.(map[string]interface{})[event.Source.UserID].([]interface{})[0]
-					grade := user.(map[string]interface{})["grade"].(string)
-					class := user.(map[string]interface{})["class"].(string)
-					replyurl := "https://keiji-tsukuba.herokuapp.com/search?grade=" + grade + "&class=" + class
-					if _, err := app.bot.ReplyMessage(
-						event.ReplyToken,
-						linebot.NewTextMessage(replyurl),
-						linebot.NewTextMessage("上記URLにて連絡を確認して下さい。"),
-					).Do(); err != nil {
-						log.Print(err)
 					}
 				}
 			} else if data == "add" {
