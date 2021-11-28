@@ -250,7 +250,7 @@ func (app *KitchenSink) Callback(w http.ResponseWriter, r *http.Request) {
 				}
 			} else if data[:5] == "grade" {
 				jsondata := loadJson("src/user.json")
-				jsondata.(map[string]interface{})[event.Source.UserID].([]interface{})[0].(map[string]interface{})["grade"] = data[5:]
+				jsondata.(map[string]interface{})[event.Source.UserID].([]interface{})[0].(map[string]interface{})["grade"] = data[6:]
 				saveJson(jsondata, "src/user.json")
 				if _, err := app.bot.ReplyMessage(
 					event.ReplyToken,
@@ -260,11 +260,11 @@ func (app *KitchenSink) Callback(w http.ResponseWriter, r *http.Request) {
 				}
 			} else if data[:5] == "class" {
 				jsondata := loadJson("src/user.json")
-				jsondata.(map[string]interface{})[event.Source.UserID].([]interface{})[0].(map[string]interface{})["class"] = data[5:]
+				jsondata.(map[string]interface{})[event.Source.UserID].([]interface{})[0].(map[string]interface{})["class"] = data[6:]
 				saveJson(jsondata, "src/user.json")
 				if _, err := app.bot.ReplyMessage(
 					event.ReplyToken,
-					linebot.NewTextMessage("クラスを"+data[5:]+"として設定しました。"),
+					linebot.NewTextMessage("クラスを"+data[6:]+"として設定しました。"),
 				).Do(); err != nil {
 					log.Print(err)
 				}
@@ -283,6 +283,35 @@ func (app *KitchenSink) Callback(w http.ResponseWriter, r *http.Request) {
 
 func (app *KitchenSink) handleText(message *linebot.TextMessage, replyToken string, source *linebot.EventSource) error {
 	switch message.Text {
+	case "設定を変更":
+		imageURL := app.appBaseURL + "/static/img/config.png"
+		template := linebot.NewCarouselTemplate(
+			linebot.NewCarouselColumn(
+				imageURL, "学年を選択", "情報を受け取る学年を全て選んでください",
+				linebot.NewPostbackAction("一年生", "grade=1", "", ""),
+				linebot.NewPostbackAction("二年生", "grade=2", "", ""),
+				linebot.NewPostbackAction("三年生", "grade=3", "", ""),
+			),
+			linebot.NewCarouselColumn(
+				imageURL, "クラスを選択", "情報を受け取るクラスを全て選んでください",
+				linebot.NewPostbackAction("一組", "class=1", "", ""),
+				linebot.NewPostbackAction("二組", "class=2", "", ""),
+				linebot.NewPostbackAction("三組", "class=3", "", ""),
+			),
+			linebot.NewCarouselColumn(
+				imageURL, "クラスを選択", "情報を受け取るクラスを全て選んでください",
+				linebot.NewPostbackAction("四組", "class=4", "", ""),
+				linebot.NewPostbackAction("五組", "class=5", "", ""),
+				linebot.NewPostbackAction("六組", "class=6", "", ""),
+			),
+		)
+		if _, err := app.bot.ReplyMessage(
+			replyToken,
+			linebot.NewTextMessage("学年とクラスを設定してください。完了したらもう一度検索を選択してください。"),
+			linebot.NewTemplateMessage("検索設定", template),
+		).Do(); err != nil {
+			log.Print(err)
+		}
 	// 	case "profile":
 	// 		if source.UserID != "" {
 	// 			profile, err := app.bot.GetProfile(source.UserID).Do()
