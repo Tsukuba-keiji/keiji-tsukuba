@@ -162,7 +162,7 @@ func (app *KitchenSink) Callback(w http.ResponseWriter, r *http.Request) {
 
 			if data == "search" {
 				jsondata := loadJson("src/user.json")
-
+				fmt.Println(jsondata)
 				if _, exist := jsondata.(map[string]interface{})[event.Source.UserID]; !exist {
 					_, existg := jsondata.(map[string]interface{})[event.Source.UserID].([]interface{})[0].(map[string]interface{})["grade"]
 					_, existc := jsondata.(map[string]interface{})[event.Source.UserID].([]interface{})[0].(map[string]interface{})["class"]
