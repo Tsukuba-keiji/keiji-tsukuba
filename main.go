@@ -159,7 +159,6 @@ func (app *KitchenSink) Callback(w http.ResponseWriter, r *http.Request) {
 			// 			if err := app.replyText(event.ReplyToken, "Got postback: "+data); err != nil {
 			// 				log.Print(err)
 			// 			}
-
 			if data == "search" {
 				jsondata := loadJson("src/user.json")
 				if _, exist := jsondata.(map[string]interface{})[event.Source.UserID]; !exist {
@@ -244,7 +243,8 @@ func (app *KitchenSink) Callback(w http.ResponseWriter, r *http.Request) {
 			} else if data == "add" {
 				if _, err := app.bot.ReplyMessage(
 					event.ReplyToken,
-					linebot.NewTextMessage("データを入力してください"),
+					linebot.NewTextMessage("https://keiji-tsukuba.herokuapp.com/add"),
+					linebot.NewTextMessage("上のURLでデータを入力してください。"),
 				).Do(); err != nil {
 					log.Print(err)
 				}
@@ -254,7 +254,7 @@ func (app *KitchenSink) Callback(w http.ResponseWriter, r *http.Request) {
 				saveJson(jsondata, "src/user.json")
 				if _, err := app.bot.ReplyMessage(
 					event.ReplyToken,
-					linebot.NewTextMessage("学年を"+data[5:]+"として設定しました。"),
+					linebot.NewTextMessage("学年を"+data[6:]+"として設定しました。"),
 				).Do(); err != nil {
 					log.Print(err)
 				}
