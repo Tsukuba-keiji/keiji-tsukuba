@@ -1,1 +1,38 @@
-HELLO WORLD!
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <title>筑波掲示板</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <link type="text/css" rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css">
+  </head>
+  
+  <body>
+    <h1>筑波掲示板</h1>
+    <h3>筑波の情報共有データベース</h3>
+    <br>
+    <form id="form" action="search">
+      <input id="keyword" type="radio" name="grade" value="1" checked/>一年生
+      <input id="keyword" type="radio" name="grade" value="2"/>二年生
+      <input id="keyword" type="radio" name="grade" value="3"/>三年生
+      <br>
+      <input id="keyword" type="radio" name="class" value="1" checked/>一組
+      <input id="keyword" type="radio" name="class" value="2"/>二組
+      <input id="keyword" type="radio" name="class" value="3"/>三組
+      <input id="keyword" type="radio" name="class" value="4"/>四組
+      <input id="keyword" type="radio" name="class" value="5"/>五組
+      <input id="keyword" type="radio" name="class" value="6"/>六組
+      <br><br>
+      <button id="submit" type="submit">
+        上の条件で検索
+        <i class="fas fa-search"></i>
+      </button>
+    </form>
+    <br><br>
+    <a href="add"><p>情報を追加する場合はこちら</p></a>
+    <br>
+    <a href="https://lin.ee/2mUhSE2"><img src="https://scdn.line-apps.com/n/line_add_friends/btn/ja.png" alt="友だち追加" height="36" border="0"></a>
+  </body>
+</html>
