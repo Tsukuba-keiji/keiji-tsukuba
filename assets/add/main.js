@@ -17,5 +17,10 @@ $(function(){
     request.open("get","https://script.google.com/macros/s/AKfycbyPF6-4wT6dljPaT8SPT1LJZP-mPdgwIL6adpC-UMSqwbMskNz0vCZChrJ417PD02TAyA/exec");
     request.setRequestHeader('Content-Type', 'application/json');
     request.send(data);
+    request.onreadystatechange = function() {
+      if (request.readyState == 4 && request.status == 200) {
+        $("body").html("<h1>success<h1>");
+      }
+    }
   });
 });
