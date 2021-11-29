@@ -22,7 +22,7 @@ function search(data,gr,cl){
   let result = document.getElementById("result");
   for(let i of data["tags"]){
     console.log(gr);
-    if(i["grade"]==gr && i["class"]==cl){
+    if(i["grade"]==gr  i["class"]==cl){
       result.insertAdjacentHTML("beforeend",data["text"][i["pointer"]]+"<br><hr><br>");
     }
   }
