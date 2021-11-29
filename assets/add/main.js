@@ -11,9 +11,10 @@ $(function(){
   $("#verify").html(`内容：${text} <br> タグ：${gr}年生、${cl}組`);
   
   document.getElementById("button").addEventListener("click",function(){
+    obj["crossDomain"]=true;
     let data = JSON.stringify(obj);
     let request = new XMLHttpRequest();
-    request.open("post","https://script.google.com/macros/s/AKfycbwu2sfN51Dw9OOzudZKjFJu7UF9vzJg8bhhKlY8zaCuJdT7NG_mjwSUlx9yfVisn8ru/exec");
+    request.open("get","https://script.google.com/macros/s/AKfycbyPF6-4wT6dljPaT8SPT1LJZP-mPdgwIL6adpC-UMSqwbMskNz0vCZChrJ417PD02TAyA/exec");
     request.setRequestHeader('Content-Type', 'application/json');
     request.send(data);
   });
