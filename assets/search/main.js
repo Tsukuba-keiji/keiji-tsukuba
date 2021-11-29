@@ -1,6 +1,6 @@
 $(function(){
   let request = new XMLHttpRequest();
-  request.open("GET","https://script.google.com/macros/s/AKfycbx8z9rPLt_lGPzUblew1IFGpE20yzhHfFqsjCcbhJJV2Gh15dVO1DdMNV5OwGYECOtC/exec");
+  request.open("GET","https://script.google.com/macros/s/AKfycbwu2sfN51Dw9OOzudZKjFJu7UF9vzJg8bhhKlY8zaCuJdT7NG_mjwSUlx9yfVisn8ru/exec");
   let param = location.search.slice(1);
   let obj = {};
   param.split('&').forEach(function(param) {
