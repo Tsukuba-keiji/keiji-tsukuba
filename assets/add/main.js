@@ -13,14 +13,17 @@ $(function(){
   document.getElementById("button").addEventListener("click",function(){
     obj["crossDomain"]=true;
     let data = JSON.stringify(obj);
-    let request = new XMLHttpRequest();
-    request.open("get","https://script.google.com/macros/s/AKfycbyPF6-4wT6dljPaT8SPT1LJZP-mPdgwIL6adpC-UMSqwbMskNz0vCZChrJ417PD02TAyA/exec");
-    request.setRequestHeader('Content-Type', 'application/json');
-    request.send(data);
-    request.onreadystatechange = function() {
-      if (request.readyState == 4 && request.status == 200) {
-        $("body").html("<h1>success<h1>");
-      }
-    }
+    document.getElementById("button").disabled = true;
+     (async () => {
+        const resp = await fetch('https://script.google.com/macros/s/AKfycbxopKKU6ECZnC1Ja99QYGAKuxAt4MRAk42BcVkvXS-TiKrSQbeTdE36sflq0Gsx76fG/exec', {
+          method: 'POST',
+          body: data,
+          headers: {
+            'Content-Type': 'text/plain'
+          }
+        });
+        console.log(`2: ${await resp.text()}`); // Ok
+        $("body").html("<h1>success</h1>");
+      })();
   });
 });
