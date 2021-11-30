@@ -7,7 +7,7 @@ $(function(){
   });
   let gr = obj["grade"];
   let cl = obj["class"];
-  let text = obj["text"].replace(/+/g," ");
+  let text = obj["text"] //.replace(/+/g," ");
   $("#verify").html(`内容：${text} <br> タグ：${gr}年生、${cl}組`);
   
   document.getElementById("button").addEventListener("click",function(){
