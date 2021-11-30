@@ -23,7 +23,7 @@ $(function(){
           }
         });
         console.log(`2: ${await resp.text()}`); // Ok
-        $("body").html("<h1>success</h1>");
+        $("body").html("<h1>アップロードに成功しました！</h1><h3>検索から確認してください</h3>");
       })();
   });
 });
