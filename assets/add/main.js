@@ -1,13 +1,13 @@
 $(function(){
-  let param = decodeURI(location.search.slice(1));
+  let param = location.search.slice(1);
   let obj = {};
   param.split('&').forEach(function(param) {
     let queryArr = param.split('=');
-    obj[queryArr[0]] = queryArr[1];
+    obj[queryArr[0]] = queryArr[1].replace(/+/g," ");
   });
-  let gr = obj["grade"];
-  let cl = obj["class"];
-  let text = obj["text"];
+  let gr = decodeURIComponent(obj["grade"]);
+  let cl = decodeURIComponent(obj["class"]);
+  let text = decodeURIComponent(obj["text"]);
   $("#verify").html(`内容：${text} <br> タグ：${gr}年生、${cl}組`);
   
   document.getElementById("button").addEventListener("click",function(){
