@@ -9,20 +9,21 @@ $(function(){
   });
   let gr = obj["grade"];
   let cl = obj["class"];
+  let ki = obj["kind"];
   request.onreadystatechange = function() {
     if (request.readyState == 4 && request.status == 200) {
       let text = JSON.parse(request.responseText);
-      search(text,gr,cl);
+      search(text,gr,cl,ki);
     }
   };
   request.send(null);
 });
 
-function search(data,gr,cl){
+function search(data,gr,cl,ki){
   let result = document.getElementById("result");
   for(let i of data["tags"]){
     console.log(gr);
-    if(i["grade"]==gr || i["class"]==cl){
+    if(i["grade"]==gr || i["class"]==cl || i["kind"]==ki){
       result.insertAdjacentHTML("beforeend",data["text"][i["pointer"]]+"<br><hr><br>");
     }
   }
