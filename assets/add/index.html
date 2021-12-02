@@ -5,28 +5,95 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic&display=swap" rel="stylesheet">
   </head>
   <body>
     <h1>追加フォーム</h1>
-    <p>追加する情報とタグを指定してください。</p>
     <form action="verify.html" methot="get">
       <p>情報の内容：</p>
       <textarea name="text"></textarea>
-      <p>学年・クラスの指定（どちらかが合致する場合に検索結果に表示されます）：</p>
-      <input id="keyword" type="radio" name="grade" value="1" checked/>一年生
-      <input id="keyword" type="radio" name="grade" value="2"/>二年生
-      <input id="keyword" type="radio" name="grade" value="3"/>三年生
-      <br>
-      <input id="keyword" type="radio" name="class" value="1" checked/>一組
-      <input id="keyword" type="radio" name="class" value="2"/>二組
-      <input id="keyword" type="radio" name="class" value="3"/>三組
-      <input id="keyword" type="radio" name="class" value="4"/>四組
-      <input id="keyword" type="radio" name="class" value="5"/>五組
-      <input id="keyword" type="radio" name="class" value="6"/>六組
       <br><br>
-      <button id="submit" type="submit">
-        情報を追加する
-      </button>
+      
+      <div id="grade">
+        <div class="radios-boxes">
+          <h2>学年の指定：</h2>
+          <br>
+          <div class="radios">
+            <input type="radio" name="grade" id="radio1g" class="radio" value="1" checked>
+            <input type="radio" name="grade" id="radio2g" class="radio" value="2">
+            <input type="radio" name="grade" id="radio3g" class="radio" value="3">
+            <div id="gball" class="ball"></div>
+          </div>
+          <div class="labels">
+            <label for="radio1g" class="label">一年生</label>
+            <label for="radio2g" class="label">二年生</label>
+            <label for="radio3g" class="label">三年生</label>
+          </div>
+        </div>
+        <br>
+        <div id="toclass" class="btn btn-flat"><span>次へ</span></div>
+      </div>
+      
+      <br>
+      
+      <div id="class">
+        <div class="radios-boxes">
+          <h2>クラスの指定：</h2>
+          <br>
+          <div class="radios">
+            <input type="radio" name="class" id="radio1c" class="radio" value="1" checked>
+            <input type="radio" name="class" id="radio2c" class="radio" value="2">
+            <input type="radio" name="class" id="radio3c" class="radio" value="3">
+            <input type="radio" name="class" id="radio4c" class="radio" value="4">
+            <input type="radio" name="class" id="radio5c" class="radio" value="5">
+            <input type="radio" name="class" id="radio6c" class="radio" value="6">
+            <div id="cball" class="ball"></div>
+          </div>
+          <div class="labels">
+            <label for="radio1c" class="label">一組</label>
+            <label for="radio2c" class="label">二組</label>
+            <label for="radio3c" class="label">三組</label>
+            <label for="radio4c" class="label">四組</label>
+            <label for="radio5c" class="label">五組</label>
+            <label for="radio6c" class="label">六組</label>
+          </div>
+        </div>
+        <div id="tokind" class="btn btn-flat"><span>次へ</span></div>
+      </div>
+        
+      <div id="kind">
+        <div class="radios-boxes">
+          <h2>連絡の種類の指定：</h2>
+          <br>
+          <div class="radios">
+            <input type="radio" name="kind" id="radio1k" class="radio" value="change" checked>
+            <input type="radio" name="kind" id="radio2k" class="radio" value="thing">
+            <input type="radio" name="kind" id="radio3k" class="radio" value="other">
+            <div id="kball" class="ball"></div>
+          </div>
+          <div class="labels">
+            <label for="radio1k" class="label">授業変更</label>
+            <label for="radio2k" class="label">持ち物連絡</label>
+            <label for="radio3k" class="label">その他</label>
+          </div>
+        </div>
+        <br>
+        <div id="toinput" class="btn btn-flat"><span>次へ</span></div>
+      </div>
+      
+      <div id="text" class="cp_iptxt">
+        <h2>連絡内容：</h2>
+          <label class="ef">
+        	<textarea placeholder="情報の入力"></textarea>
+        	</label>
+        <br>
+        <button type="submit" class="btn btn-flat"><span>次へ</span></button>
+      </div>
     </form>
+    
+    <script src="main2.js"></script>
   </body>
 </html>
