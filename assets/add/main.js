@@ -21,7 +21,7 @@ $(function(){
     let data = JSON.stringify(obj);
     document.getElementById("button").disabled = true;
      (async () => {
-        const resp = await fetch('https://script.google.com/macros/s/AKfycbxopKKU6ECZnC1Ja99QYGAKuxAt4MRAk42BcVkvXS-TiKrSQbeTdE36sflq0Gsx76fG/exec', {
+        const resp = await fetch('https://script.google.com/macros/s/AKfycbyNiJ1tn_dKS1XeQy2JelaLi-aDMsoOFOHhij3r4NRTCQEiehDef-upm28PIPS9RhvJcQ/exec', {
           method: 'POST',
           body: data,
           headers: {
