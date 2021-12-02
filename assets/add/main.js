@@ -5,10 +5,16 @@ $(function(){
     let queryArr = param.split('=');
     obj[queryArr[0]] = queryArr[1];
   });
+  let dt = {
+    "change":"授業変更",
+    "thing":"持ち物連絡",
+    "other":"その他"
+  };
   let gr = obj["grade"];
   let cl = obj["class"];
+  let ki = dt[obj["kind"]];
   let text = obj["text"].replace(/\+/g," ");
-  $("#verify").html(`内容：${text} <br> タグ：${gr}年生、${cl}組`);
+  $("#verify").html(`内容：${text} <br> タグ：${gr}年生、${cl}組、${ki}`);
   
   document.getElementById("button").addEventListener("click",function(){
     obj["crossDomain"]=true;
